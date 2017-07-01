@@ -2,6 +2,7 @@ package de.htw.sebastiankapunkt.kipfub.game;
 
 import de.htw.sebastiankapunkt.kipfub.model.Bot;
 import de.htw.sebastiankapunkt.kipfub.model.RGBModel;
+import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
 import de.htw.sebastiankapunkt.kipfub.representation.App;
 import javafx.application.Application;
 import lenz.htw.kipifub.ColorChange;
@@ -12,6 +13,7 @@ public class GameField {
 
     public static final int X_DIMENSION = 1024;
     public static final int Y_DIMENSION = 1024;
+    public static final int SCALED = 16;
     private RGBModel[][] field;
     private Bot[][] bots = new Bot[3][3];
     private App app;
@@ -41,6 +43,8 @@ public class GameField {
         new Thread(() -> Application.launch(App.class)).start();
         app = App.waitForStart();
         app.drawGame(field);
+        app.drawGrid(SCALED);
+        app.drawScaledField(new ScaledField(SCALED, 3, 3), SCALED);
     }
 
     public void applyColorChange(ColorChange colorChange) {
