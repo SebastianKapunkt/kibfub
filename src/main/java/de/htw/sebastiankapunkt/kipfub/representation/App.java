@@ -1,6 +1,6 @@
 package de.htw.sebastiankapunkt.kipfub.representation;
 
-import de.htw.sebastiankapunkt.kipfub.model.RGBModel;
+import de.htw.sebastiankapunkt.kipfub.game.GameField;
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -59,16 +59,6 @@ public class App extends Application {
         setStartUp(this);
     }
 
-    public void drawGame(RGBModel[][] game) {
-        for (int x = 0; x < boardSize; x++) {
-            for (int y = 0; y < boardSize; y++) {
-                RGBModel current = game[x][y];
-                context.setStroke(Color.rgb(current.getRed(), current.getGreen(), current.getBlue()));
-                context.strokeLine(x, y, x, y);
-            }
-        }
-    }
-
     public void applyChange(ColorChange colorChange) {
         switch (colorChange.player) {
             case 0:
@@ -85,23 +75,27 @@ public class App extends Application {
         context.fillOval(colorChange.x - 10, colorChange.y - 10, 20, 20);
     }
 
-    public void drawGrid(int size) {
+    public void drawGrid() {
         context.setFill(Color.DARKCYAN);
-        for (int x = size; x < boardSize; x = x + size) {
+        for (int x = GameField.SCALED; x < boardSize; x = x + GameField.SCALED) {
             context.fillRect(x, 0, strokeWidth, boardSize);
         }
-        for (int y = size; y < boardSize; y = y + size) {
+        for (int y = GameField.SCALED; y < boardSize; y = y + GameField.SCALED) {
             context.fillRect(0, y, boardSize, strokeWidth);
         }
     }
 
-    public void drawScaledField(ScaledField scaledField, int scale) {
-        context.setFill(Color.BURLYWOOD);
+    public void drawScaledField(ScaledField scaledField) {
+        if (scaledField.isWalkable) {
+            context.setFill(Color.WHITE);
+        } else {
+            context.setFill(Color.BLACK);
+        }
         context.fillRect(
                 scaledField.fromX + strokeWidth,
                 scaledField.fromY + strokeWidth,
-                scale - strokeWidth,
-                scale - strokeWidth
+                GameField.SCALED - strokeWidth,
+                GameField.SCALED - strokeWidth
         );
     }
 }
