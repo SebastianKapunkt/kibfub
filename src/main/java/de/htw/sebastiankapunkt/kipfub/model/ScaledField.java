@@ -11,33 +11,12 @@ public class ScaledField {
 
     private int score = 10000;
 
-    private ScaledField top;
-    private ScaledField right;
-    private ScaledField bottom;
-    private ScaledField let;
-
     public ScaledField(int x, int y, boolean isWalkable) {
         this.fromX = x;
         this.toX = x + GameField.SCALED;
         this.fromY = y;
         this.toY = y + GameField.SCALED;
         this.isWalkable = isWalkable;
-    }
-
-    public void setTop(ScaledField top) {
-        this.top = top;
-    }
-
-    public void setRight(ScaledField right) {
-        this.right = right;
-    }
-
-    public void setBottom(ScaledField bottom) {
-        this.bottom = bottom;
-    }
-
-    public void setLet(ScaledField let) {
-        this.let = let;
     }
 
     public void addScore(int value) {
