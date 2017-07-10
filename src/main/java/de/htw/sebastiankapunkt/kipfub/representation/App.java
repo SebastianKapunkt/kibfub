@@ -64,7 +64,6 @@ public class App extends Application {
         double score = scaledField.getScore();
 
         try {
-
             context.setFill(new Color(score / maxScore, score / maxScore, score / maxScore, 1));
 
             context.fillRect(
@@ -90,7 +89,8 @@ public class App extends Application {
 
     public void drawScaledField(ScaledField scaledField) {
         if (scaledField.isWalkable) {
-            context.setFill(Color.WHITE);
+            double score = scaledField.getScore();
+            context.setFill(new Color(score / maxScore, score / maxScore, score / maxScore, 1));
         } else {
             context.setFill(Color.BLACK);
         }
