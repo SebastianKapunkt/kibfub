@@ -61,11 +61,11 @@ public class App extends Application {
     }
 
     public void applyChange(ScaledField scaledField) {
-        int score = scaledField.getScore();
+        double score = scaledField.getScore();
 
         try {
 
-            context.setFill(new Color(score / maxScore, 0, 0, 1));
+            context.setFill(new Color(score / maxScore, score / maxScore, score / maxScore, 1));
 
             context.fillRect(
                     scaledField.fromX + strokeWidth,

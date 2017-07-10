@@ -10,7 +10,7 @@ import lenz.htw.kipifub.net.NetworkClient;
 
 public class GameField {
 
-    public static final int SCALED = 10;
+    public static final int SCALED = 16;
     private ScaledField[][] scaledFields = new ScaledField[1024 / SCALED][1024 / SCALED];
     private Bot[][] bots = new Bot[3][3];
     private App app;
@@ -70,7 +70,7 @@ public class GameField {
             changes.removeScore();
         }
         if (myPlayerNumber == 1) {
-//            System.out.println(String.format("Score of cell (%s, %s) is %s", changes.fromX, changes.fromY, changes.getScore()));
+            System.out.println(String.format("Score of cell (%s, %s) is %s", changes.fromX, changes.fromY, changes.getScore()));
             app.applyChange(changes);
         }
     }

@@ -9,8 +9,8 @@ public class ScaledField {
     public final int toY;
     public final boolean isWalkable;
 
-    public static int maxScore = GameField.SCALED;
-    private int score = maxScore;
+    public static double maxScore = 6;
+    private double score = maxScore;
 
     public ScaledField(int x, int y, boolean isWalkable) {
         this.fromX = x;
@@ -18,21 +18,25 @@ public class ScaledField {
         this.fromY = y;
         this.toY = y + GameField.SCALED;
         this.isWalkable = isWalkable;
+
+        if (!isWalkable) {
+            score = maxScore * 100;
+        }
     }
 
     public void addScore() {
         if (score < maxScore) {
-            score += GameField.SCALED/3;
+            score += 1;
         }
     }
 
     public void removeScore() {
         if (score > 0) {
-            score -= GameField.SCALED/3;
+            score -= 1;
         }
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 }
