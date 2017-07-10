@@ -10,12 +10,14 @@ import lenz.htw.kipifub.net.NetworkClient;
 
 public class GameField {
 
-    public static final int SCALED = 8;
+    public static final int SCALED = 10;
     private ScaledField[][] scaledFields = new ScaledField[1024 / SCALED][1024 / SCALED];
     private Bot[][] bots = new Bot[3][3];
     private App app;
+    private int myPlayerNumber;
 
-    public GameField() {
+    public GameField(int playerNumber) {
+        myPlayerNumber = playerNumber;
         bots[0][0] = new Bot(0, 0);
         bots[0][1] = new Bot(1, 0);
         bots[0][2] = new Bot(2, 0);
@@ -30,13 +32,18 @@ public class GameField {
     }
 
     public void fillInitialField(NetworkClient client) {
-        new Thread(() -> Application.launch(App.class)).start();
-        app = App.waitForStart();
-        app.drawGrid();
+
+        if (myPlayerNumber == 1) {
+            new Thread(() -> Application.launch(App.class)).start();
+            app = App.waitForStart();
+            app.drawGrid();
+        }
         for (int x = 0; x < 1024 / SCALED; x++) {
             for (int y = 0; y < 1024 / SCALED; y++) {
                 scaledFields[x][y] = fillScaledField(x * SCALED, y * SCALED, client);
-                app.drawScaledField(scaledFields[x][y]);
+                if (myPlayerNumber == 1) {
+                    app.drawScaledField(scaledFields[x][y]);
+                }
             }
         }
     }
@@ -54,8 +61,17 @@ public class GameField {
 
     public void applyColorChange(ColorChange colorChange) {
         updateBots(colorChange);
-        if (app != null) {
-            app.applyChange(colorChange);
+
+        ScaledField changes = scaledFields[colorChange.x / SCALED][colorChange.y / SCALED];
+
+        if (colorChange.player == myPlayerNumber) {
+            changes.addScore();
+        } else {
+            changes.removeScore();
+        }
+        if (myPlayerNumber == 1) {
+//            System.out.println(String.format("Score of cell (%s, %s) is %s", changes.fromX, changes.fromY, changes.getScore()));
+            app.applyChange(changes);
         }
     }
 

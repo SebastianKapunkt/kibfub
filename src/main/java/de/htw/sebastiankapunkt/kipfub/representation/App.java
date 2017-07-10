@@ -10,15 +10,16 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import lenz.htw.kipifub.ColorChange;
 
 import java.util.concurrent.CountDownLatch;
+
+import static de.htw.sebastiankapunkt.kipfub.model.ScaledField.maxScore;
 
 public class App extends Application {
 
     public static final CountDownLatch latch = new CountDownLatch(1);
     public static App self;
-    private static int strokeWidth = 2;
+    private static int strokeWidth = 1;
 
     private GraphicsContext context;
     private int boardSize = 1024;
@@ -59,20 +60,22 @@ public class App extends Application {
         setStartUp(this);
     }
 
-    public void applyChange(ColorChange colorChange) {
-        switch (colorChange.player) {
-            case 0:
-                context.setFill(Color.RED);
-                break;
-            case 1:
-                context.setFill(Color.GREEN);
-                break;
-            case 2:
-                context.setFill(Color.BLUE);
-                break;
-        }
+    public void applyChange(ScaledField scaledField) {
+        int score = scaledField.getScore();
 
-        context.fillOval(colorChange.x - 10, colorChange.y - 10, 20, 20);
+        try {
+
+            context.setFill(new Color(score / maxScore, 0, 0, 1));
+
+            context.fillRect(
+                    scaledField.fromX + strokeWidth,
+                    scaledField.fromY + strokeWidth,
+                    GameField.SCALED - strokeWidth,
+                    GameField.SCALED - strokeWidth
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void drawGrid() {
