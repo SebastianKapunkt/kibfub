@@ -18,10 +18,6 @@ public class ScaledField {
         this.fromY = y;
         this.toY = y + GameField.SCALED;
         this.isWalkable = isWalkable;
-
-        if (!isWalkable) {
-            score = maxScore * 100;
-        }
     }
 
     public void addScore() {

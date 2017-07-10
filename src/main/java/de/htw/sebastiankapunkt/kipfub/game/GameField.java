@@ -38,6 +38,7 @@ public class GameField {
             app = App.waitForStart();
             app.drawGrid();
         }
+
         for (int x = 0; x < 1024 / SCALED; x++) {
             for (int y = 0; y < 1024 / SCALED; y++) {
                 scaledFields[x][y] = fillScaledField(x * SCALED, y * SCALED, client);
