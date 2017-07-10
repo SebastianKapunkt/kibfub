@@ -8,10 +8,10 @@ public class ClientStarter {
             new KipFubClient(host, "Name1");
         }).start();
         new Thread(() -> {
-            new KipFubClient(host, "Name2");
+            new RandomClient(host, "Random1");
         }).start();
         new Thread(() -> {
-            new KipFubClient(host, "Name3");
+            new RandomClient(host, "Random2");
         }).start();
     }
 }

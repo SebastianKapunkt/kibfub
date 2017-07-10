@@ -2,18 +2,16 @@ package de.htw.sebastiankapunkt.kipfub.game;
 
 import de.htw.sebastiankapunkt.kipfub.model.Bot;
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
-import de.htw.sebastiankapunkt.kipfub.representation.App;
-import javafx.application.Application;
 import lenz.htw.kipifub.ColorChange;
 import lenz.htw.kipifub.net.NetworkClient;
+
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALED;
 
 
 public class GameField {
 
-    public static final int SCALED = 16;
     private ScaledField[][] scaledFields = new ScaledField[1024 / SCALED][1024 / SCALED];
     private Bot[][] bots = new Bot[3][3];
-    private App app;
     private int myPlayerNumber;
 
     public GameField(int playerNumber) {
@@ -31,22 +29,10 @@ public class GameField {
         bots[2][2] = new Bot(2, 2);
     }
 
-    public void fillInitialField(NetworkClient client) {
-
-        if (myPlayerNumber == 1) {
-            new Thread(() -> Application.launch(App.class)).start();
-            app = App.waitForStart();
-            app.drawGrid();
-        }
-
-        for (int x = 0; x < 1024 / SCALED; x++) {
-            for (int y = 0; y < 1024 / SCALED; y++) {
-                scaledFields[x][y] = fillScaledField(x * SCALED, y * SCALED, client);
-                if (myPlayerNumber == 1) {
-                    app.drawScaledField(scaledFields[x][y]);
-                }
-            }
-        }
+    public ScaledField createField(int x, int y, NetworkClient client) {
+        ScaledField scaledField = fillScaledField(x * SCALED, y * SCALED, client);
+        scaledFields[x][y] = scaledField;
+        return scaledField;
     }
 
     private ScaledField fillScaledField(int xStart, int yStart, NetworkClient client) {
@@ -60,7 +46,7 @@ public class GameField {
         return new ScaledField(xStart, yStart, true);
     }
 
-    public void applyColorChange(ColorChange colorChange) {
+    public ScaledField applyColorChange(ColorChange colorChange) {
         updateBots(colorChange);
 
         ScaledField changes = scaledFields[colorChange.x / SCALED][colorChange.y / SCALED];
@@ -70,10 +56,8 @@ public class GameField {
         } else {
             changes.removeScore();
         }
-        if (myPlayerNumber == 1) {
-            System.out.println(String.format("Score of cell (%s, %s) is %s", changes.fromX, changes.fromY, changes.getScore()));
-            app.applyChange(changes);
-        }
+
+        return changes;
     }
 
     private void updateBots(ColorChange colorChange) {

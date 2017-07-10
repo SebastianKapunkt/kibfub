@@ -1,6 +1,6 @@
 package de.htw.sebastiankapunkt.kipfub.model;
 
-import de.htw.sebastiankapunkt.kipfub.game.GameField;
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALED;
 
 public class ScaledField {
     public final int fromX;
@@ -14,9 +14,9 @@ public class ScaledField {
 
     public ScaledField(int x, int y, boolean isWalkable) {
         this.fromX = x;
-        this.toX = x + GameField.SCALED;
+        this.toX = x + SCALED;
         this.fromY = y;
-        this.toY = y + GameField.SCALED;
+        this.toY = y + SCALED;
         this.isWalkable = isWalkable;
     }
 

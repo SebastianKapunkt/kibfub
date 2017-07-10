@@ -1,5 +1,6 @@
 package de.htw.sebastiankapunkt.kipfub.game;
 
+import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
 import de.htw.sebastiankapunkt.kipfub.representation.ViewController;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -14,17 +15,24 @@ public class GameController {
     private GameField game;
     private ViewController view;
     private NetworkClient client;
-    private int playernumber;
+    public static final int SCALED = 16;
 
     public GameController(NetworkClient client) {
         this.client = client;
-        this.playernumber = client.getMyPlayerNumber(); // 0 = rot, 1 = grün, 2 = blau
+//        this.playernumber = client.getMyPlayerNumber(); // 0 = rot, 1 = grün, 2 = blau
 
-        view = new ViewController(playernumber);
-        game = new GameField(playernumber);
+        view = new ViewController();
+        game = new GameField(client.getMyPlayerNumber());
+    }
 
-
-        game.fillInitialField(client);
+    public void initialize() {
+        ScaledField field;
+        for (int x = 0; x < 1024 / SCALED; x++) {
+            for (int y = 0; y < 1024 / SCALED; y++) {
+                field = game.createField(x, y, client);
+                view.drawScaledField(field);
+            }
+        }
     }
 
     public void startObserving() {
@@ -39,11 +47,12 @@ public class GameController {
         }, BackpressureStrategy.BUFFER)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
-                .subscribeWith(new ResourceSubscriber<ColorChange>() {
+                .map(colorChange -> game.applyColorChange(colorChange))
+                .map(scaledField -> view.applyColorChange(scaledField))
+                .subscribeWith(new ResourceSubscriber<ScaledField>() {
                     @Override
-                    public void onNext(ColorChange change) {
-                        game.applyColorChange(change);
-//                                view.applyColorChange(change);
+                    public void onNext(ScaledField change) {
+
                     }
 
                     @Override

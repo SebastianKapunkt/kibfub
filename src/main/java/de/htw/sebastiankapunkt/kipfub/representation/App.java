@@ -1,6 +1,5 @@
 package de.htw.sebastiankapunkt.kipfub.representation;
 
-import de.htw.sebastiankapunkt.kipfub.game.GameField;
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -13,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.util.concurrent.CountDownLatch;
 
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALED;
 import static de.htw.sebastiankapunkt.kipfub.model.ScaledField.maxScore;
 
 public class App extends Application {
@@ -70,8 +70,8 @@ public class App extends Application {
             context.fillRect(
                     scaledField.fromX + strokeWidth,
                     scaledField.fromY + strokeWidth,
-                    GameField.SCALED - strokeWidth,
-                    GameField.SCALED - strokeWidth
+                    SCALED - strokeWidth,
+                    SCALED - strokeWidth
             );
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,10 +80,10 @@ public class App extends Application {
 
     public void drawGrid() {
         context.setFill(Color.DARKCYAN);
-        for (int x = GameField.SCALED; x < boardSize; x = x + GameField.SCALED) {
+        for (int x = SCALED; x < boardSize; x = x + SCALED) {
             context.fillRect(x, 0, strokeWidth, boardSize);
         }
-        for (int y = GameField.SCALED; y < boardSize; y = y + GameField.SCALED) {
+        for (int y = SCALED; y < boardSize; y = y + SCALED) {
             context.fillRect(0, y, boardSize, strokeWidth);
         }
     }
@@ -97,8 +97,8 @@ public class App extends Application {
         context.fillRect(
                 scaledField.fromX + strokeWidth,
                 scaledField.fromY + strokeWidth,
-                GameField.SCALED - strokeWidth,
-                GameField.SCALED - strokeWidth
+                SCALED - strokeWidth,
+                SCALED - strokeWidth
         );
     }
 }
