@@ -102,6 +102,30 @@ public class Pathfinding {
                 neighbors.add(new Node(current.x - 1, current.y));
             }
         }
+        //up left
+        if (current.x - 1 > 0 && current.y - 1 > 0) {
+            if (scaledFields[current.x - 1][current.y - 1].isWalkable) {
+                neighbors.add(new Node(current.x - 1, current.y - 1));
+            }
+        }
+        //up right
+        if (current.x + 1 < 1024 && current.y - 1 > 0) {
+            if (scaledFields[current.x + 1][current.y - 1].isWalkable) {
+                neighbors.add(new Node(current.x + 1, current.y - 1));
+            }
+        }
+        //down right
+        if (current.x + 1 < 1024 && current.y + 1 < 1024) {
+            if (scaledFields[current.x + 1][current.y + 1].isWalkable) {
+                neighbors.add(new Node(current.x + 1, current.y + 1));
+            }
+        }
+        //down left
+        if (current.x - 1 > 0 && current.y + 1 < 1024) {
+            if (scaledFields[current.x - 1][current.y + 1].isWalkable) {
+                neighbors.add(new Node(current.x - 1, current.y + 1));
+            }
+        }
         return neighbors;
     }
 

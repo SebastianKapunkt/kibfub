@@ -37,10 +37,19 @@ public class PathfindingTest {
         field[12][22] = new ScaledField(12 * SCALED, 22 * SCALED, false);
         field[11][22] = new ScaledField(11 * SCALED, 22 * SCALED, false);
         field[10][22] = new ScaledField(10 * SCALED, 22 * SCALED, false);
-
+        field[9][22] = new ScaledField(9 * SCALED, 22 * SCALED, false);
+        field[8][22] = new ScaledField(8 * SCALED, 22 * SCALED, false);
+        field[7][22] = new ScaledField(7 * SCALED, 22 * SCALED, false);
+        field[6][22] = new ScaledField(6 * SCALED, 22 * SCALED, false);
+        field[5][22] = new ScaledField(5 * SCALED, 22 * SCALED, false);
+        field[4][22] = new ScaledField(4 * SCALED, 22 * SCALED, false);
+        field[3][22] = new ScaledField(3 * SCALED, 22 * SCALED, false);
+        field[2][22] = new ScaledField(2 * SCALED, 22 * SCALED, false);
+        field[1][22] = new ScaledField(SCALED, 22 * SCALED, false);
+        field[0][22] = new ScaledField(0, 22 * SCALED, false);
 
         Pathfinding pathfinding = new Pathfinding(field);
-        Node start = new Node(13, 19);
+        Node start = new Node(14, 19);
         Node goal = new Node(16, 19);
 
         LinkedList<Node> result = pathfinding.aStar(start, goal);
