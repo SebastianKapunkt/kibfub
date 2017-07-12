@@ -1,6 +1,7 @@
 package de.htw.sebastiankapunkt.kipfub.representation;
 
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
+import de.htw.sebastiankapunkt.kipfub.pathfinding.Node;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -10,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
 
 import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALED;
@@ -97,6 +99,29 @@ public class App extends Application {
         context.fillRect(
                 scaledField.fromX + strokeWidth,
                 scaledField.fromY + strokeWidth,
+                SCALED - strokeWidth,
+                SCALED - strokeWidth
+        );
+    }
+
+    public void drawPath(LinkedList<Node> nodes) {
+        context.setFill(new Color(1, 0, 1, 0.5));
+        for (Node node : nodes) {
+            context.fillRect(
+                    node.x * SCALED + strokeWidth,
+                    node.y * SCALED + strokeWidth,
+                    SCALED - strokeWidth,
+                    SCALED - strokeWidth
+            );
+        }
+    }
+
+    public void drawNode(Node node) {
+        context.setFill(new Color(0, 1, 0, 0.5));
+
+        context.fillRect(
+                node.x * SCALED + strokeWidth,
+                node.y * SCALED + strokeWidth,
                 SCALED - strokeWidth,
                 SCALED - strokeWidth
         );

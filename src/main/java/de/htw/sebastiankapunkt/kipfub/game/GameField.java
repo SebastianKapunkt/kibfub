@@ -72,4 +72,8 @@ public class GameField {
     private ScaledField getField(int x, int y) {
         return scaledFields[x / SCALED][y / SCALED];
     }
+
+    public ScaledField[][] getBoard() {
+        return scaledFields;
+    }
 }

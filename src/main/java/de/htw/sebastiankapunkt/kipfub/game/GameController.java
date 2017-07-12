@@ -1,6 +1,9 @@
 package de.htw.sebastiankapunkt.kipfub.game;
 
+import de.htw.sebastiankapunkt.kipfub.model.Bot;
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
+import de.htw.sebastiankapunkt.kipfub.pathfinding.Node;
+import de.htw.sebastiankapunkt.kipfub.pathfinding.Pathfinding;
 import de.htw.sebastiankapunkt.kipfub.representation.ViewController;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -17,6 +20,7 @@ public class GameController {
     private ViewController view;
     private NetworkClient client;
     public static final int SCALED = 16;
+    private boolean isPathfindingRunning = false;
 
     public GameController(NetworkClient client) {
         this.client = client;
@@ -52,7 +56,15 @@ public class GameController {
                 .subscribeWith(new ResourceSubscriber<ScaledField>() {
                     @Override
                     public void onNext(ScaledField change) {
-
+                        if (!isPathfindingRunning && game.getBots()[0][0].x != 0 && game.getBots()[0][2].x != 0) {
+                            isPathfindingRunning = true;
+                            Node start = new Node(game.getBots()[0][0].x / SCALED, game.getBots()[0][0].y / SCALED);
+                            Node goal = new Node(game.getBots()[0][2].x / SCALED, game.getBots()[0][2].y / SCALED);
+                            view.drawNode(start);
+                            view.drawNode(goal);
+                            Pathfinding pathfinding = new Pathfinding(game.getBoard());
+                            view.drawPath(pathfinding.aStar(start, goal));
+                        }
                     }
 
                     @Override
@@ -65,5 +77,9 @@ public class GameController {
                         System.out.println("Game should be done");
                     }
                 });
+    }
+
+    public Bot[][] getBots() {
+        return game.getBots();
     }
 }

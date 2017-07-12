@@ -10,6 +10,7 @@ public class KipFubClient {
 
     public KipFubClient(String host, String name) {
         NetworkClient networkClient = new NetworkClient(host, name);
+        int playernumber = networkClient.getMyPlayerNumber();
         GameController controller = new GameController(networkClient);
         controller.initialize();
         controller.startObserving();
@@ -19,12 +20,12 @@ public class KipFubClient {
         while (networkClient.isAlive()) {
             if (System.currentTimeMillis() - i > 1000) {
                 i = System.currentTimeMillis();
-//                networkClient.setMoveDirection(0, 512.0f - game.getBots()[playernumber][0].getX(), 512.0f - game.getBots()[playernumber][0].getY());
-//                networkClient.setMoveDirection(1, 512.0f - game.getBots()[playernumber][1].getX(), 512.0f - game.getBots()[playernumber][1].getY());
-//                networkClient.setMoveDirection(2, 512.0f - game.getBots()[playernumber][2].getX(), 512.0f - game.getBots()[playernumber][2].getY());
-                networkClient.setMoveDirection(0, randomDirection(), randomDirection());
-                networkClient.setMoveDirection(1, randomDirection(), randomDirection());
-                networkClient.setMoveDirection(2, randomDirection(), randomDirection());
+//                networkClient.setMoveDirection(0, 512.0f - controller.getBots()[playernumber][0].getX(), 512.0f - controller.getBots()[playernumber][0].getY());
+//                networkClient.setMoveDirection(1, 512.0f - controller.getBots()[playernumber][1].getX(), 512.0f - controller.getBots()[playernumber][1].getY());
+//                networkClient.setMoveDirection(2, 512.0f - controller.getBots()[playernumber][2].getX(), 512.0f - controller.getBots()[playernumber][2].getY());
+//                networkClient.setMoveDirection(0, randomDirection(), randomDirection());
+//                networkClient.setMoveDirection(1, randomDirection(), randomDirection());
+//                networkClient.setMoveDirection(2, randomDirection(), randomDirection());
             }
         }
     }
