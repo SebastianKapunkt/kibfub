@@ -92,7 +92,7 @@ public class App extends Application {
             double score = scaledField.getScore();
             context.setFill(new Color(score / maxScore, score / maxScore, score / maxScore, 1));
         } else {
-            context.setFill(Color.BLACK);
+            context.setFill(Color.ANTIQUEWHITE);
         }
         context.fillRect(
                 scaledField.fromX + strokeWidth,

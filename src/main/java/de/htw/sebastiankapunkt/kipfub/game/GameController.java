@@ -12,6 +12,7 @@ import lenz.htw.kipifub.net.NetworkClient;
 
 public class GameController {
 
+    // 0 = rot, 1 = grün, 2 = blau
     private GameField game;
     private ViewController view;
     private NetworkClient client;
@@ -19,7 +20,6 @@ public class GameController {
 
     public GameController(NetworkClient client) {
         this.client = client;
-//        this.playernumber = client.getMyPlayerNumber(); // 0 = rot, 1 = grün, 2 = blau
 
         view = new ViewController();
         game = new GameField(client.getMyPlayerNumber());

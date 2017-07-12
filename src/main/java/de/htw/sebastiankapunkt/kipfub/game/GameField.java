@@ -49,7 +49,7 @@ public class GameField {
     public ScaledField applyColorChange(ColorChange colorChange) {
         updateBots(colorChange);
 
-        ScaledField changes = scaledFields[colorChange.x / SCALED][colorChange.y / SCALED];
+        ScaledField changes = getField(colorChange.x, colorChange.y);
 
         if (colorChange.player == myPlayerNumber) {
             changes.addScore();
@@ -67,5 +67,9 @@ public class GameField {
 
     public Bot[][] getBots() {
         return bots;
+    }
+
+    private ScaledField getField(int x, int y) {
+        return scaledFields[x / SCALED][y / SCALED];
     }
 }
