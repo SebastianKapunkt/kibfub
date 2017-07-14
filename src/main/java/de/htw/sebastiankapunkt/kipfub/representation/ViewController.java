@@ -5,6 +5,7 @@ import de.htw.sebastiankapunkt.kipfub.pathfinding.Node;
 import javafx.application.Application;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 public class ViewController {
 
@@ -41,5 +42,9 @@ public class ViewController {
 
     public void drawNode(Node node) {
         app.drawNode(node);
+    }
+
+    public void drawSum(Map<Node, Double> sum) {
+        app.drawSum(sum);
     }
 }

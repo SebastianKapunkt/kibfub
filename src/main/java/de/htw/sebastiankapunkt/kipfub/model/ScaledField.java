@@ -10,7 +10,7 @@ public class ScaledField {
     public final boolean isWalkable;
 
     public static double maxScore = 6;
-    private double score = maxScore / 2;
+    public double score = maxScore / 2;
 
     public ScaledField(int x, int y, boolean isWalkable) {
         this.fromX = x;

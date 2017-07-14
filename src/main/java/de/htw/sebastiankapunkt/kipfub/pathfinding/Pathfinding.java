@@ -79,7 +79,7 @@ public class Pathfinding {
     private List<Node> getNeighbors(Node current) {
         List<Node> neighbors = new ArrayList<>();
         //up
-        if (current.y - 1 > 0) {
+        if (current.y > 0) {
             if (scaledFields[current.x][current.y - 1].isWalkable) {
                 neighbors.add(new Node(current.x, current.y - 1));
             }
@@ -97,31 +97,31 @@ public class Pathfinding {
             }
         }
         //left
-        if (current.x - 1 > 0) {
+        if (current.x > 0) {
             if (scaledFields[current.x - 1][current.y].isWalkable) {
                 neighbors.add(new Node(current.x - 1, current.y));
             }
         }
         //up left
-        if (current.x - 1 > 0 && current.y - 1 > 0) {
+        if (current.x > 0 && current.y > 0) {
             if (scaledFields[current.x - 1][current.y - 1].isWalkable) {
                 neighbors.add(new Node(current.x - 1, current.y - 1));
             }
         }
         //up right
-        if (current.x + 1 < 1024 && current.y - 1 > 0) {
+        if (current.x + 1 < 1024 / SCALED && current.y > 0) {
             if (scaledFields[current.x + 1][current.y - 1].isWalkable) {
                 neighbors.add(new Node(current.x + 1, current.y - 1));
             }
         }
         //down right
-        if (current.x + 1 < 1024 && current.y + 1 < 1024) {
+        if (current.x + 1 < 1024 / SCALED && current.y + 1 < 1024 / SCALED) {
             if (scaledFields[current.x + 1][current.y + 1].isWalkable) {
                 neighbors.add(new Node(current.x + 1, current.y + 1));
             }
         }
         //down left
-        if (current.x - 1 > 0 && current.y + 1 < 1024) {
+        if (current.x > 0 && current.y + 1 < 1024 / SCALED) {
             if (scaledFields[current.x - 1][current.y + 1].isWalkable) {
                 neighbors.add(new Node(current.x - 1, current.y + 1));
             }

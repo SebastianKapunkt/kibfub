@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALED;
@@ -125,5 +126,18 @@ public class App extends Application {
                 SCALED - strokeWidth,
                 SCALED - strokeWidth
         );
+    }
+
+    public void drawSum(Map<Node, Double> sum) {
+        for (Map.Entry<Node, Double> nodeIntegerEntry : sum.entrySet()) {
+            context.setFill(new Color(1, 0, 0, 1 - nodeIntegerEntry.getValue() / 96));
+            context.fillRect(
+                    nodeIntegerEntry.getKey().x * 64,
+                    nodeIntegerEntry.getKey().y * 64,
+                    64,
+                    64
+            );
+
+        }
     }
 }

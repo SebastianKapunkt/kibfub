@@ -19,38 +19,34 @@ public class PathfindingTest {
             }
         }
 
-        field[10][15] = new ScaledField(10 * SCALED, 15 * SCALED, false);
-        field[11][15] = new ScaledField(11 * SCALED, 15 * SCALED, false);
-        field[12][15] = new ScaledField(12 * SCALED, 15 * SCALED, false);
-        field[13][15] = new ScaledField(13 * SCALED, 15 * SCALED, false);
-        field[14][15] = new ScaledField(14 * SCALED, 15 * SCALED, false);
-        field[15][15] = new ScaledField(15 * SCALED, 15 * SCALED, false);
-        field[15][16] = new ScaledField(15 * SCALED, 16 * SCALED, false);
-        field[15][17] = new ScaledField(15 * SCALED, 17 * SCALED, false);
-        field[15][18] = new ScaledField(15 * SCALED, 18 * SCALED, false);
-        field[15][19] = new ScaledField(15 * SCALED, 19 * SCALED, false);
-        field[15][20] = new ScaledField(15 * SCALED, 20 * SCALED, false);
-        field[15][21] = new ScaledField(15 * SCALED, 21 * SCALED, false);
-        field[15][22] = new ScaledField(15 * SCALED, 22 * SCALED, false);
-        field[14][22] = new ScaledField(14 * SCALED, 22 * SCALED, false);
-        field[13][22] = new ScaledField(13 * SCALED, 22 * SCALED, false);
-        field[12][22] = new ScaledField(12 * SCALED, 22 * SCALED, false);
-        field[11][22] = new ScaledField(11 * SCALED, 22 * SCALED, false);
-        field[10][22] = new ScaledField(10 * SCALED, 22 * SCALED, false);
-        field[9][22] = new ScaledField(9 * SCALED, 22 * SCALED, false);
-        field[8][22] = new ScaledField(8 * SCALED, 22 * SCALED, false);
-        field[7][22] = new ScaledField(7 * SCALED, 22 * SCALED, false);
-        field[6][22] = new ScaledField(6 * SCALED, 22 * SCALED, false);
-        field[5][22] = new ScaledField(5 * SCALED, 22 * SCALED, false);
-        field[4][22] = new ScaledField(4 * SCALED, 22 * SCALED, false);
-        field[3][22] = new ScaledField(3 * SCALED, 22 * SCALED, false);
-        field[2][22] = new ScaledField(2 * SCALED, 22 * SCALED, false);
-        field[1][22] = new ScaledField(SCALED, 22 * SCALED, false);
-        field[0][22] = new ScaledField(0, 22 * SCALED, false);
+        //wall right short
+        for (int i = 10; i < 16; i++) {
+            field[i][15] = new ScaledField(i * SCALED, 15 * SCALED, false);
+        }
+
+        //wall down
+        for (int i = 16; i < 23; i++) {
+            field[15][i] = new ScaledField(15 * SCALED, i * SCALED, false);
+        }
+
+        //wall down
+        for (int i = 16; i < 23; i++) {
+            field[23][i] = new ScaledField(23 * SCALED, i * SCALED, false);
+        }
+
+        //wall down
+        for (int i = 23; i < 30; i++) {
+            field[23][i] = new ScaledField(23 * SCALED, i * SCALED, false);
+        }
+
+        //wall right long
+        for (int i = 0; i < 30; i++) {
+            field[i][22] = new ScaledField(i * SCALED, 22 * SCALED, false);
+        }
 
         Pathfinding pathfinding = new Pathfinding(field);
-        Node start = new Node(14, 19);
-        Node goal = new Node(16, 19);
+        Node start = new Node(14, 21);
+        Node goal = new Node(0, 23);
 
         LinkedList<Node> result = pathfinding.aStar(start, goal);
 
