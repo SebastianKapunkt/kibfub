@@ -15,8 +15,6 @@ public class GameController {
     private BrushController brush;
     private ColorChangeController colorChangeController;
 
-    private PathMover mover;
-
     private NetworkClient client;
     private int myPlayerNumber;
 
@@ -32,11 +30,20 @@ public class GameController {
         view = new ViewController();
         view.observe(game.connect());
 
-        brush = new BrushController();
+        brush = new BrushController(myPlayerNumber);
         brush.observe(colorChangeController.connect());
 
-        mover = new PathMover();
+        PathMover mover = new PathMover(brush.getMyBrushOne(), game, client);
         mover.observe(brush.connect());
+        view.observePath(mover.connect());
+
+        PathMover mover2 = new PathMover(brush.getMyBrushTwo(), game, client);
+        mover2.observe(brush.connect());
+        view.observePath(mover2.connect());
+
+        PathMover mover3 = new PathMover(brush.getMyBrushThree(), game, client);
+        mover3.observe(brush.connect());
+        view.observePath(mover3.connect());
 
         colorChangeController.observeColorChange(client);
     }
@@ -50,46 +57,4 @@ public class GameController {
             }
         }
     }
-
-//    public void startObserving() {
-//        Flowable.create((FlowableOnSubscribe<ColorChange>) e -> {
-//            ColorChange colorChange;
-//            while (client.isAlive()) {
-//                if ((colorChange = client.pullNextColorChange()) != null) {
-//                    e.onNext(colorChange);
-//                }
-//            }
-//            e.onComplete();
-//        }, BackpressureStrategy.BUFFER)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(Schedulers.computation())
-//                .map(colorChange -> game.applyColorChange(colorChange))
-//                .map(scaledField -> view.applyColorChange(scaledField))
-//                .subscribeWith(new ResourceSubscriber<ScaledField>() {
-//                    @Override
-//                    public void onNext(ScaledField change) {
-//                        if (!isPathfindingRunning && game.getBrushes()[0][0].x != 0 && game.getBrushes()[0][2].x != 0) {
-//                            isPathfindingRunning = true;
-//                            Node start = new Node(game.getBrushes()[0][0].x / SCALED, game.getBrushes()[0][0].y / SCALED);
-//                            Node goal = new Node(game.getBrushes()[0][2].x / SCALED, game.getBrushes()[0][2].y / SCALED);
-//                            view.drawNode(start);
-//                            view.drawNode(goal);
-//                            Pathfinding pathfinding = new Pathfinding(game.getBoard());
-//                            LinkedList<Node> path = pathfinding.aStar(start, goal);
-//                            view.drawPath(path);
-//                            new PathMover(getBots()).doMoveFor(path);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable t) {
-//                        t.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        System.out.println("Game should be done");
-//                    }
-//                });
-//    }
 }

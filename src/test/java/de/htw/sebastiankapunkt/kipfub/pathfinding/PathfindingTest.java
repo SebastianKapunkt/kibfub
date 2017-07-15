@@ -1,5 +1,6 @@
 package de.htw.sebastiankapunkt.kipfub.pathfinding;
 
+import de.htw.sebastiankapunkt.kipfub.model.Node;
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
 import de.htw.sebastiankapunkt.kipfub.representation.ViewController;
 import org.junit.Test;

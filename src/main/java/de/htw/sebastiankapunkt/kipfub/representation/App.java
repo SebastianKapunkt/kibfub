@@ -1,7 +1,7 @@
 package de.htw.sebastiankapunkt.kipfub.representation;
 
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
-import de.htw.sebastiankapunkt.kipfub.pathfinding.Node;
+import de.htw.sebastiankapunkt.kipfub.model.Node;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -55,7 +55,6 @@ public class App extends Application {
         Canvas canvas = new Canvas(boardSize, boardSize);
         context = canvas.getGraphicsContext2D();
         layout.getChildren().add(canvas);
-
 
         Scene scene = new Scene(layout, boardSize, boardSize);
         primaryStage.setScene(scene);
@@ -135,7 +134,6 @@ public class App extends Application {
                     64,
                     64
             );
-
         }
     }
 }

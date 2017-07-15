@@ -1,4 +1,4 @@
-package de.htw.sebastiankapunkt.kipfub.pathfinding;
+package de.htw.sebastiankapunkt.kipfub.model;
 
 public class Node {
     public final int x;

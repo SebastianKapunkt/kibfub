@@ -1,5 +1,6 @@
 package de.htw.sebastiankapunkt.kipfub.pathfinding;
 
+import de.htw.sebastiankapunkt.kipfub.model.Node;
 import org.junit.Assert;
 import org.junit.Test;
 

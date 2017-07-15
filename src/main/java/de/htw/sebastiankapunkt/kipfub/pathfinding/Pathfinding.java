@@ -1,5 +1,6 @@
 package de.htw.sebastiankapunkt.kipfub.pathfinding;
 
+import de.htw.sebastiankapunkt.kipfub.model.Node;
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
 
 import java.util.*;
@@ -30,8 +31,6 @@ public class Pathfinding {
                 fScore.put(new Node(x, y), 1000000);
             }
         }
-
-
     }
 
     public LinkedList<Node> aStar(Node start, Node goal) {
@@ -146,5 +145,4 @@ public class Pathfinding {
         assert min != null;
         return min.getKey();
     }
-
 }

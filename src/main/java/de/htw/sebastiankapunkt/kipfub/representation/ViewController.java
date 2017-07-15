@@ -2,7 +2,7 @@ package de.htw.sebastiankapunkt.kipfub.representation;
 
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
 import de.htw.sebastiankapunkt.kipfub.model.Tuple3;
-import de.htw.sebastiankapunkt.kipfub.pathfinding.Node;
+import de.htw.sebastiankapunkt.kipfub.model.Node;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
@@ -30,11 +30,6 @@ public class ViewController {
 
     public void drawPath(LinkedList<Node> nodes) {
         System.out.print(nodes.size());
-        System.out.print("I AM OUT");
-        System.out.print("I AM OUT");
-        System.out.print("I AM OUT");
-        System.out.print("I AM OUT");
-        System.out.print("I AM OUT");
         app.drawPath(nodes);
     }
 
@@ -74,6 +69,29 @@ public class ViewController {
                     @Override
                     public void onComplete() {
                         System.out.println("ViewController onCompleted called");
+                    }
+                });
+    }
+
+    public void observePath(PublishSubject<LinkedList<Node>> subject) {
+        subject
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(new DisposableObserver<LinkedList<Node>>() {
+                    @Override
+                    public void onNext(LinkedList<Node> nodes) {
+                        drawPath(nodes);
+                        drawNode(nodes.getLast());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        System.out.println("PathMover onCompleted called");
                     }
                 });
     }
