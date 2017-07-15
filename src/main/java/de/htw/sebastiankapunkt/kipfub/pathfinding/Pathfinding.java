@@ -80,53 +80,43 @@ public class Pathfinding {
         List<Node> neighbors = new ArrayList<>();
         //up
         if (current.y > 0) {
-            if (scaledFields[current.x][current.y - 1].isWalkable) {
-                neighbors.add(new Node(current.x, current.y - 1));
-            }
+            addNode(neighbors, current.x, current.y - 1);
         }
         //right
         if (current.x + 1 < 1024 / SCALED) {
-            if (scaledFields[current.x + 1][current.y].isWalkable) {
-                neighbors.add(new Node(current.x + 1, current.y));
-            }
+            addNode(neighbors, current.x + 1, current.y);
         }
         //down
         if (current.y + 1 < 1024 / SCALED) {
-            if (scaledFields[current.x][current.y + 1].isWalkable) {
-                neighbors.add(new Node(current.x, current.y + 1));
-            }
+            addNode(neighbors, current.x, current.y + 1);
         }
         //left
         if (current.x > 0) {
-            if (scaledFields[current.x - 1][current.y].isWalkable) {
-                neighbors.add(new Node(current.x - 1, current.y));
-            }
+            addNode(neighbors, current.x - 1, current.y);
         }
         //up left
         if (current.x > 0 && current.y > 0) {
-            if (scaledFields[current.x - 1][current.y - 1].isWalkable) {
-                neighbors.add(new Node(current.x - 1, current.y - 1));
-            }
+            addNode(neighbors, current.x - 1, current.y - 1);
         }
         //up right
         if (current.x + 1 < 1024 / SCALED && current.y > 0) {
-            if (scaledFields[current.x + 1][current.y - 1].isWalkable) {
-                neighbors.add(new Node(current.x + 1, current.y - 1));
-            }
+            addNode(neighbors, current.x + 1, current.y - 1);
         }
         //down right
         if (current.x + 1 < 1024 / SCALED && current.y + 1 < 1024 / SCALED) {
-            if (scaledFields[current.x + 1][current.y + 1].isWalkable) {
-                neighbors.add(new Node(current.x + 1, current.y + 1));
-            }
+            addNode(neighbors, current.x + 1, current.y + 1);
         }
         //down left
         if (current.x > 0 && current.y + 1 < 1024 / SCALED) {
-            if (scaledFields[current.x - 1][current.y + 1].isWalkable) {
-                neighbors.add(new Node(current.x - 1, current.y + 1));
-            }
+            addNode(neighbors, current.x - 1, current.y + 1);
         }
         return neighbors;
+    }
+
+    private void addNode(List<Node> neighbors, int x, int y) {
+        if (scaledFields[x][y].isWalkable) {
+            neighbors.add(new Node(x, y));
+        }
     }
 
     private LinkedList<Node> reconstructPath(Map<Node, Node> camefrom, Node current) {
