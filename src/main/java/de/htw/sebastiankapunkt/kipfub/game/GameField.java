@@ -25,15 +25,58 @@ public class GameField {
         connect.subscribe(new DisposableObserver<ColorChange>() {
             @Override
             public void onNext(ColorChange colorChange) {
+                ScaledField up = null;
+                ScaledField right = null;
+                ScaledField down = null;
+                ScaledField left = null;
+
                 ScaledField changes = getField(colorChange.x, colorChange.y);
 
-                if (colorChange.player == myPlayerNumber) {
-                    changes.addScore();
-                } else {
-                    changes.removeScore();
+                if (colorChange.bot == 2) {
+                    if (colorChange.y - 16 > 0) {
+                        up = getField(colorChange.x, colorChange.y - SCALE);
+                    }
+                    if (colorChange.x + 16 < 1024) {
+                        right = getField(colorChange.x + SCALE, colorChange.y);
+                    }
+                    if (colorChange.y + 16 < 1024) {
+                        down = getField(colorChange.x, colorChange.y - SCALE);
+                    }
+                    if (colorChange.x - 16 > 0) {
+                        left = getField(colorChange.x - SCALE, colorChange.y);
+                    }
+
+                    if (up != null) {
+                        score(colorChange, up);
+                    }
+                    if (right != null) {
+                        score(colorChange, right);
+                    }
+                    if (down != null) {
+                        score(colorChange, down);
+                    }
+                    if (left != null) {
+                        score(colorChange, left);
+                    }
                 }
 
+                score(colorChange, changes);
+
+
                 subject.onNext(changes);
+
+                if (up != null) {
+                    subject.onNext(up);
+                }
+                if (right != null) {
+                    subject.onNext(right);
+                }
+                if (down != null) {
+                    subject.onNext(down);
+                }
+                if (left != null) {
+                    subject.onNext(left);
+                }
             }
 
             @Override
@@ -46,6 +89,14 @@ public class GameField {
                 System.out.println("Game onCompleted called");
             }
         });
+    }
+
+    private void score(ColorChange colorChange, ScaledField changes) {
+        if (colorChange.player == myPlayerNumber) {
+            changes.addScore();
+        } else {
+            changes.removeScore();
+        }
     }
 
     public PublishSubject<ScaledField> connect() {

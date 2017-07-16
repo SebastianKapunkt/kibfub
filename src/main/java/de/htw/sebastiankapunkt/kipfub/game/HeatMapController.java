@@ -116,7 +116,7 @@ public class HeatMapController {
         }
 
         for (Map.Entry<Node, Double> nodeDoubleEntry : nodesOfTwo.entrySet()) {
-            if (second == null || second.getValue() < nodeDoubleEntry.getValue()) {
+            if (second == null || Math.abs(nodeDoubleEntry.getValue() - 3) < Math.abs(second.getValue() - 3)) {
                 second = nodeDoubleEntry;
             }
         }
@@ -129,11 +129,11 @@ public class HeatMapController {
 
         switch (type) {
             case 0:
-                return third.getKey();
-            case 1:
-                return first.getKey();
-            case 2:
                 return second.getKey();
+            case 1:
+                return third.getKey();
+            case 2:
+                return first.getKey();
             default:
                 return first.getKey();
         }
