@@ -6,42 +6,19 @@ import io.reactivex.subjects.PublishSubject;
 import lenz.htw.kipifub.ColorChange;
 import lenz.htw.kipifub.net.NetworkClient;
 
-import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALED;
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.NUMBER;
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALE;
 
 
 public class GameField {
 
-    private ScaledField[][] scaledFields = new ScaledField[1024 / SCALED][1024 / SCALED];
+    private ScaledField[][] game = new ScaledField[NUMBER][NUMBER];
+
     private int myPlayerNumber;
     private PublishSubject<ScaledField> subject = PublishSubject.create();
 
     public GameField(int playerNumber) {
         myPlayerNumber = playerNumber;
-    }
-
-    public ScaledField createField(int x, int y, NetworkClient client) {
-        ScaledField scaledField = fillScaledField(x * SCALED, y * SCALED, client);
-        scaledFields[x][y] = scaledField;
-        return scaledField;
-    }
-
-    private ScaledField fillScaledField(int xStart, int yStart, NetworkClient client) {
-        for (int xZoomed = xStart; xZoomed < xStart + SCALED; xZoomed++) {
-            for (int yZoomed = yStart; yZoomed < yStart + SCALED; yZoomed++) {
-                if (!client.isWalkable(xZoomed, yZoomed)) {
-                    return new ScaledField(xStart, yStart, false);
-                }
-            }
-        }
-        return new ScaledField(xStart, yStart, true);
-    }
-
-    private ScaledField getField(int x, int y) {
-        return scaledFields[x / SCALED][y / SCALED];
-    }
-
-    public ScaledField[][] getBoard() {
-        return scaledFields;
     }
 
     public void observe(PublishSubject<ColorChange> connect) {
@@ -73,5 +50,30 @@ public class GameField {
 
     public PublishSubject<ScaledField> connect() {
         return subject;
+    }
+
+    private ScaledField getField(int x, int y) {
+        return game[x / SCALE][y / SCALE];
+    }
+
+    public ScaledField[][] getBoard() {
+        return game;
+    }
+
+    public ScaledField createField(int x, int y, NetworkClient client) {
+        ScaledField scaledField = fillScaledField(x * SCALE, y * SCALE, client);
+        game[x][y] = scaledField;
+        return scaledField;
+    }
+
+    private ScaledField fillScaledField(int xStart, int yStart, NetworkClient client) {
+        for (int xZoomed = xStart; xZoomed < xStart + SCALE; xZoomed++) {
+            for (int yZoomed = yStart; yZoomed < yStart + SCALE; yZoomed++) {
+                if (!client.isWalkable(xZoomed, yZoomed)) {
+                    return new ScaledField(xStart, yStart, false);
+                }
+            }
+        }
+        return new ScaledField(xStart, yStart, true);
     }
 }

@@ -5,9 +5,9 @@ import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
 
 import java.util.*;
 
-import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALED;
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.NUMBER;
 
-public class Pathfinding {
+public class Pathfinder {
 
     private final ScaledField[][] scaledFields;
     private Set<Node> closeSet;
@@ -17,7 +17,7 @@ public class Pathfinding {
     private Map<Node, Integer> fScore;
     private Node current;
 
-    public Pathfinding(ScaledField[][] scaledFields) {
+    public Pathfinder(ScaledField[][] scaledFields) {
         this.scaledFields = scaledFields.clone();
         closeSet = new HashSet<>();
         camefrom = new HashMap<>();
@@ -25,8 +25,8 @@ public class Pathfinding {
         gScore = new HashMap<>();
         fScore = new HashMap<>();
 
-        for (int x = 0; x < 1024 / SCALED; x++) {
-            for (int y = 0; y < 1024 / SCALED; y++) {
+        for (int x = 0; x < NUMBER; x++) {
+            for (int y = 0; y < NUMBER; y++) {
                 gScore.put(new Node(x, y), 1000000);
                 fScore.put(new Node(x, y), 1000000);
             }
@@ -34,7 +34,7 @@ public class Pathfinding {
     }
 
     public LinkedList<Node> aStar(Node start, Node goal) {
-        System.out.println(start.toString());
+//        System.out.println(start.toString());
         System.out.println(goal.toString());
         openSet.add(start);
         gScore.put(start, 0);
@@ -82,11 +82,11 @@ public class Pathfinding {
             addNode(neighbors, current.x, current.y - 1);
         }
         //right
-        if (current.x + 1 < 1024 / SCALED) {
+        if (current.x + 1 < NUMBER) {
             addNode(neighbors, current.x + 1, current.y);
         }
         //down
-        if (current.y + 1 < 1024 / SCALED) {
+        if (current.y + 1 < NUMBER) {
             addNode(neighbors, current.x, current.y + 1);
         }
         //left
@@ -98,15 +98,15 @@ public class Pathfinding {
             addNode(neighbors, current.x - 1, current.y - 1);
         }
         //up right
-        if (current.x + 1 < 1024 / SCALED && current.y > 0) {
+        if (current.x + 1 < NUMBER && current.y > 0) {
             addNode(neighbors, current.x + 1, current.y - 1);
         }
         //down right
-        if (current.x + 1 < 1024 / SCALED && current.y + 1 < 1024 / SCALED) {
+        if (current.x + 1 < NUMBER && current.y + 1 < NUMBER) {
             addNode(neighbors, current.x + 1, current.y + 1);
         }
         //down left
-        if (current.x > 0 && current.y + 1 < 1024 / SCALED) {
+        if (current.x > 0 && current.y + 1 < NUMBER) {
             addNode(neighbors, current.x - 1, current.y + 1);
         }
         return neighbors;

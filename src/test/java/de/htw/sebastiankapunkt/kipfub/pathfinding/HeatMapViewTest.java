@@ -8,18 +8,19 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALED;
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.NUMBER;
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALE;
 import static de.htw.sebastiankapunkt.kipfub.model.ScaledField.maxScore;
 
-public class HeatMapTest {
+public class HeatMapViewTest {
 
     @Test
     public void collectHeatMapTest() {
         ViewController view = new ViewController();
-        ScaledField[][] field = new ScaledField[1024 / SCALED][1024 / SCALED];
-        for (int x = 0; x < 1024 / SCALED; x++) {
-            for (int y = 0; y < 1024 / SCALED; y++) {
-                field[x][y] = new ScaledField(x * SCALED, y * SCALED, true);
+        ScaledField[][] field = new ScaledField[NUMBER][NUMBER];
+        for (int x = 0; x < NUMBER; x++) {
+            for (int y = 0; y < NUMBER; y++) {
+                field[x][y] = new ScaledField(x * SCALE, y * SCALE, true);
                 field[x][y].score = Math.random() * maxScore;
             }
         }
@@ -44,8 +45,8 @@ public class HeatMapTest {
         field[34][35].score = 0;
         field[35][35].score = 0;
 
-        for (int x = 0; x < 1024 / SCALED; x++) {
-            for (int y = 0; y < 1024 / SCALED; y++) {
+        for (int x = 0; x < NUMBER; x++) {
+            for (int y = 0; y < NUMBER; y++) {
                 view.drawScaledField(field[x][y]);
             }
         }

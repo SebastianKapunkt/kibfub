@@ -11,6 +11,10 @@ public class KipFubClient {
     public KipFubClient(String host, String name) {
         NetworkClient networkClient = new NetworkClient(host, name);
         GameController controller = new GameController(networkClient);
-        controller.initialize();
+        try {
+            controller.initialize();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,28 +1,32 @@
 package de.htw.sebastiankapunkt.kipfub.pathfinding;
 
 import de.htw.sebastiankapunkt.kipfub.game.GameField;
+import de.htw.sebastiankapunkt.kipfub.game.HeatMapController;
 import de.htw.sebastiankapunkt.kipfub.model.Brush;
 import de.htw.sebastiankapunkt.kipfub.model.Node;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import lenz.htw.kipifub.net.NetworkClient;
 
 import java.util.LinkedList;
 import java.util.Random;
 
-import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALED;
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALE;
+import static de.htw.sebastiankapunkt.kipfub.game.HeatMapController.HEATMAP_MODIFIER;
 
 public class PathMover {
 
     private Brush observingBrush;
     private GameField game;
     private NetworkClient client;
-    private long timestamp;
-
-    private boolean isPathfinding = true;
-    private static int treshhold = 16;
-    private LinkedList<Node> currentPath;
     private static Random rand = new Random();
+
+    private LinkedList<Node> currentPath = new LinkedList<>();
+    private long timestamp;
+    private boolean isPathfinding = true;
+
+    private Node currentGoal = new Node(32, 15);
 
     private PublishSubject<LinkedList<Node>> subject = PublishSubject.create();
 
@@ -38,35 +42,54 @@ public class PathMover {
         connect
                 .filter(brush -> brush.equals(observingBrush))
                 .doOnNext(brush -> {
+                    if (!currentPath.isEmpty()) {
+                        Node current = currentPath.getLast();
+
+                        if (isNearNextNode(brush, current)) {
+                            moveBrush(currentPath.getLast());
+                            currentPath.removeLast();
+                        }
+
+                        moveBrush(current);
+                    }
+                })
+                .doOnNext(brush -> {
+                    if (currentPath.isEmpty()) {
+                        if (System.currentTimeMillis() - timestamp > 1000) {
+                            timestamp = System.currentTimeMillis();
+                            client.setMoveDirection(brush.type, randomDirection(), randomDirection());
+                        }
+                    }
+                })
+                .doOnNext(brush -> {
+                    if (currentPath.isEmpty()) {
+                        HeatMapController heatMap = new HeatMapController(game.getBoard());
+                        heatMap.createHeatMap();
+                        Node highest = heatMap.getHighest();
+
+                        System.out.println(highest.x + " " + highest.y);
+                        currentGoal = new Node(highest.x * SCALE * HEATMAP_MODIFIER, highest.y * SCALE * HEATMAP_MODIFIER);
+
+                        isPathfinding = true;
+                    }
+                })
+                .doOnNext(brush -> {
                     if (isPathfinding) {
                         isPathfinding = false;
-                        Node start = new Node(brush.x / SCALED, brush.y / SCALED);
-                        Node goal = new Node(32, 15);
-                        Pathfinding pathfinding = new Pathfinding(game.getBoard());
-                        currentPath = pathfinding.aStar(start, goal);
+                        Node start = new Node(brush.x / SCALE, brush.y / SCALE);
+                        Pathfinder pathfinder = new Pathfinder(game.getBoard());
+                        currentPath = pathfinder.aStar(start, currentGoal);
                         subject.onNext(currentPath);
                         currentPath.removeLast();
                         moveBrush(currentPath.getLast());
                     }
                 })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
                 .subscribe(new DisposableObserver<Brush>() {
                     @Override
                     public void onNext(Brush brush) {
-                        if (!currentPath.isEmpty()) {
-                            Node current = currentPath.getLast();
 
-                            if (isNearNextNode(brush, current)) {
-                                moveBrush(currentPath.getLast());
-                                currentPath.removeLast();
-                            }
-
-                            moveBrush(current);
-                        } else {
-                            if (System.currentTimeMillis() - timestamp > 1000) {
-                                timestamp = System.currentTimeMillis();
-                                client.setMoveDirection(brush.type, randomDirection(), randomDirection());
-                            }
-                        }
                     }
 
                     @Override
@@ -82,15 +105,16 @@ public class PathMover {
     }
 
     public boolean isNearNextNode(Brush brush, Node current) {
-        return current.x * SCALED - treshhold < brush.x
-                && brush.x < current.x * SCALED + treshhold
-                && current.y * SCALED - treshhold < brush.y
-                && brush.y < current.y * SCALED + treshhold;
+        int threshold = 16;
+        return current.x * SCALE - threshold < brush.x
+                && brush.x < current.x * SCALE + threshold
+                && current.y * SCALE - threshold < brush.y
+                && brush.y < current.y * SCALE + threshold;
     }
 
     private void moveBrush(Node first) {
-        float xDi = first.x * SCALED - observingBrush.x;
-        float yDi = first.y * SCALED - observingBrush.y;
+        float xDi = first.x * SCALE - observingBrush.x;
+        float yDi = first.y * SCALE - observingBrush.y;
 
 //        System.out.println(xDi + " " + yDi);
 

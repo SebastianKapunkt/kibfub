@@ -1,8 +1,8 @@
 package de.htw.sebastiankapunkt.kipfub.representation;
 
+import de.htw.sebastiankapunkt.kipfub.model.Node;
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
 import de.htw.sebastiankapunkt.kipfub.model.Tuple3;
-import de.htw.sebastiankapunkt.kipfub.model.Node;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
@@ -11,6 +11,8 @@ import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 import java.util.Map;
+
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALE;
 
 public class ViewController {
 
@@ -29,7 +31,6 @@ public class ViewController {
     }
 
     public void drawPath(LinkedList<Node> nodes) {
-        System.out.print(nodes.size());
         app.drawPath(nodes);
     }
 
@@ -49,8 +50,8 @@ public class ViewController {
                                         scaledField.score / ScaledField.maxScore,
                                         scaledField.score / ScaledField.maxScore,
                                         1),
-                                scaledField.fromX,
-                                scaledField.fromY
+                                scaledField.x,
+                                scaledField.y
                         )
                 )
                 .subscribeOn(Schedulers.io())
@@ -58,7 +59,7 @@ public class ViewController {
                 .subscribe(new DisposableObserver<Tuple3<Color, Integer, Integer>>() {
                     @Override
                     public void onNext(Tuple3<Color, Integer, Integer> colorChange) {
-                        app.applyChange(colorChange.item1, colorChange.item2, colorChange.item3);
+                        app.applyChange(colorChange.item1, colorChange.item2, colorChange.item3, SCALE);
                     }
 
                     @Override

@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
-import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALED;
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALE;
 import static de.htw.sebastiankapunkt.kipfub.model.ScaledField.maxScore;
 
 public class App extends Application {
@@ -62,15 +62,15 @@ public class App extends Application {
         setStartUp(this);
     }
 
-    public void applyChange(Color color, int x, int y) {
+    public void applyChange(Color color, int x, int y, int width) {
         try {
             context.setFill(color);
 
             context.fillRect(
                     x + strokeWidth,
                     y + strokeWidth,
-                    SCALED - strokeWidth,
-                    SCALED - strokeWidth
+                    width - strokeWidth,
+                    width - strokeWidth
             );
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,10 +79,10 @@ public class App extends Application {
 
     public void drawGrid() {
         context.setFill(Color.DARKCYAN);
-        for (int x = SCALED; x < boardSize; x = x + SCALED) {
+        for (int x = SCALE; x < boardSize; x = x + SCALE) {
             context.fillRect(x, 0, strokeWidth, boardSize);
         }
-        for (int y = SCALED; y < boardSize; y = y + SCALED) {
+        for (int y = SCALE; y < boardSize; y = y + SCALE) {
             context.fillRect(0, y, boardSize, strokeWidth);
         }
     }
@@ -95,10 +95,10 @@ public class App extends Application {
             context.setFill(Color.ANTIQUEWHITE);
         }
         context.fillRect(
-                scaledField.fromX + strokeWidth,
-                scaledField.fromY + strokeWidth,
-                SCALED - strokeWidth,
-                SCALED - strokeWidth
+                scaledField.x + strokeWidth,
+                scaledField.y + strokeWidth,
+                SCALE - strokeWidth,
+                SCALE - strokeWidth
         );
     }
 
@@ -106,10 +106,10 @@ public class App extends Application {
         context.setFill(new Color(1, 0, 1, 0.5));
         for (Node node : nodes) {
             context.fillRect(
-                    node.x * SCALED + strokeWidth,
-                    node.y * SCALED + strokeWidth,
-                    SCALED - strokeWidth,
-                    SCALED - strokeWidth
+                    node.x * SCALE + strokeWidth,
+                    node.y * SCALE + strokeWidth,
+                    SCALE - strokeWidth,
+                    SCALE - strokeWidth
             );
         }
     }
@@ -118,10 +118,10 @@ public class App extends Application {
         context.setFill(new Color(0, 1, 0, 0.5));
 
         context.fillRect(
-                node.x * SCALED + strokeWidth,
-                node.y * SCALED + strokeWidth,
-                SCALED - strokeWidth,
-                SCALED - strokeWidth
+                node.x * SCALE + strokeWidth,
+                node.y * SCALE + strokeWidth,
+                SCALE - strokeWidth,
+                SCALE - strokeWidth
         );
     }
 
