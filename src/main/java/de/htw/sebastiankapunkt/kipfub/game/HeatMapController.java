@@ -94,10 +94,14 @@ public class HeatMapController {
         Map.Entry<Node, Double> third = null;
 
         for (Map.Entry<Node, Double> nodeDoubleEntry : arr.entrySet()) {
-            if (one == null || two == null || three == null || one.getValue() > nodeDoubleEntry.getValue()) {
-                three = two;
-                two = one;
+            if (one == null || three == null || one.getValue() > nodeDoubleEntry.getValue()) {
+                three = one;
                 one = nodeDoubleEntry;
+            }
+        }
+        for (Map.Entry<Node, Double> nodeDoubleEntry : arr.entrySet()) {
+            if (two == null || Math.abs(nodeDoubleEntry.getValue() - 3) < Math.abs(two.getValue() - 3)) {
+                two = nodeDoubleEntry;
             }
         }
 
@@ -127,9 +131,9 @@ public class HeatMapController {
             case 0:
                 return third.getKey();
             case 1:
-                return second.getKey();
-            case 3:
                 return first.getKey();
+            case 2:
+                return second.getKey();
             default:
                 return first.getKey();
         }
