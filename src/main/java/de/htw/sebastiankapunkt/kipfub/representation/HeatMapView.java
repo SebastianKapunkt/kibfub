@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
+import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALE;
+import static de.htw.sebastiankapunkt.kipfub.game.HeatMapController.HEATMAP_MODIFIER;
+
 public class HeatMapView extends Application {
 
     public static final CountDownLatch latch = new CountDownLatch(1);
@@ -61,10 +64,10 @@ public class HeatMapView extends Application {
         for (Map.Entry<Node, Double> nodeIntegerEntry : sum.entrySet()) {
             context.setFill(new Color(1, 0, 0, 1 - nodeIntegerEntry.getValue() / 6));
             context.fillRect(
-                    nodeIntegerEntry.getKey().x * 64,
-                    nodeIntegerEntry.getKey().y * 64,
-                    64,
-                    64
+                    nodeIntegerEntry.getKey().x * SCALE * HEATMAP_MODIFIER,
+                    nodeIntegerEntry.getKey().y * SCALE * HEATMAP_MODIFIER,
+                    SCALE * HEATMAP_MODIFIER,
+                    SCALE * HEATMAP_MODIFIER
             );
         }
     }

@@ -125,14 +125,14 @@ public class App extends Application {
         );
     }
 
-    public void drawSum(Map<Node, Double> sum) {
+    public void drawSum(Map<Node, Double> sum, int scale) {
         for (Map.Entry<Node, Double> nodeIntegerEntry : sum.entrySet()) {
-            context.setFill(new Color(1, 0, 0, 1 - nodeIntegerEntry.getValue() / 96));
+            context.setFill(new Color(1, 0, 0, 1 - nodeIntegerEntry.getValue() / 6));
             context.fillRect(
-                    nodeIntegerEntry.getKey().x * 64,
-                    nodeIntegerEntry.getKey().y * 64,
-                    64,
-                    64
+                    nodeIntegerEntry.getKey().x * scale,
+                    nodeIntegerEntry.getKey().y * scale,
+                    scale,
+                    scale
             );
         }
     }

@@ -26,7 +26,11 @@ public class ViewController {
 
     public void drawScaledField(ScaledField field) {
         if (app != null) {
-            app.drawScaledField(field);
+            try {
+                app.drawScaledField(field);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -38,8 +42,8 @@ public class ViewController {
         app.drawNode(node);
     }
 
-    public void drawSum(Map<Node, Double> sum) {
-        app.drawSum(sum);
+    public void drawSum(Map<Node, Double> sum, int scale) {
+        app.drawSum(sum, scale);
     }
 
     public void observe(PublishSubject<ScaledField> connect) {

@@ -27,7 +27,6 @@ public class BrushController {
         brushes[2][2] = new Brush(2, 2);
     }
 
-
     public void observe(PublishSubject<ColorChange> connect) {
         connect
                 .subscribeOn(Schedulers.io())

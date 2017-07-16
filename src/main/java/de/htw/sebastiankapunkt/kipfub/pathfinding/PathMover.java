@@ -24,9 +24,7 @@ public class PathMover {
 
     private LinkedList<Node> currentPath = new LinkedList<>();
     private long timestamp;
-    private boolean isPathfinding = true;
-
-    private Node currentGoal = new Node(32, 15);
+    private long recalculate;
 
     private PublishSubject<LinkedList<Node>> subject = PublishSubject.create();
 
@@ -36,6 +34,7 @@ public class PathMover {
         this.client = client;
 
         timestamp = System.currentTimeMillis();
+        recalculate = System.currentTimeMillis();
     }
 
     public void observe(PublishSubject<Brush> connect) {
@@ -62,26 +61,24 @@ public class PathMover {
                     }
                 })
                 .doOnNext(brush -> {
-                    if (currentPath.isEmpty()) {
+                    if (System.currentTimeMillis() - recalculate > 2000) {
+                        recalculate = System.currentTimeMillis();
+
                         HeatMapController heatMap = new HeatMapController(game.getBoard());
                         heatMap.createHeatMap();
-                        Node highest = heatMap.getHighest();
+                        Node highest = heatMap.getHighest(brush.type);
 
                         System.out.println(highest.x + " " + highest.y);
-                        currentGoal = new Node(highest.x * SCALE * HEATMAP_MODIFIER, highest.y * SCALE * HEATMAP_MODIFIER);
+                        int x = (highest.x * HEATMAP_MODIFIER) + (HEATMAP_MODIFIER / 2);
+                        int y = (highest.y * HEATMAP_MODIFIER) + (HEATMAP_MODIFIER / 2);
+                        Node currentGoal = new Node(x, y);
 
-                        isPathfinding = true;
-                    }
-                })
-                .doOnNext(brush -> {
-                    if (isPathfinding) {
-                        isPathfinding = false;
                         Node start = new Node(brush.x / SCALE, brush.y / SCALE);
                         Pathfinder pathfinder = new Pathfinder(game.getBoard());
                         currentPath = pathfinder.aStar(start, currentGoal);
-                        subject.onNext(currentPath);
-                        currentPath.removeLast();
-                        moveBrush(currentPath.getLast());
+                        if (!currentPath.isEmpty()) {
+                            subject.onNext(new LinkedList<>(currentPath));
+                        }
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -113,8 +110,8 @@ public class PathMover {
     }
 
     private void moveBrush(Node first) {
-        float xDi = first.x * SCALE - observingBrush.x;
-        float yDi = first.y * SCALE - observingBrush.y;
+        float xDi = ((first.x * SCALE) + SCALE / 2) - observingBrush.x;
+        float yDi = ((first.y * SCALE) + SCALE / 2) - observingBrush.y;
 
 //        System.out.println(xDi + " " + yDi);
 

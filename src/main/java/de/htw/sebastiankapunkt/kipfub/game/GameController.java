@@ -22,36 +22,31 @@ public class GameController {
     public GameController(NetworkClient client) {
         this.client = client;
 
-        try {
+        myPlayerNumber = client.getMyPlayerNumber();
+        colorChangeController = new ColorChangeController();
 
-            myPlayerNumber = client.getMyPlayerNumber();
-            colorChangeController = new ColorChangeController();
+        game = new GameField(myPlayerNumber);
+        game.observe(colorChangeController.connect());
 
-            game = new GameField(myPlayerNumber);
-            game.observe(colorChangeController.connect());
+        view = new ViewController();
+        view.observe(game.connect());
 
-            view = new ViewController();
-            view.observe(game.connect());
+        brush = new BrushController(myPlayerNumber);
+        brush.observe(colorChangeController.connect());
 
-            brush = new BrushController(myPlayerNumber);
-            brush.observe(colorChangeController.connect());
+        PathMover mover = new PathMover(brush.getMyBrushOne(), game, client);
+        mover.observe(brush.connect());
+//        view.observePath(mover.connect());
 
-            PathMover mover = new PathMover(brush.getMyBrushOne(), game, client);
-            mover.observe(brush.connect());
-            view.observePath(mover.connect());
+        PathMover mover2 = new PathMover(brush.getMyBrushTwo(), game, client);
+        mover2.observe(brush.connect());
+//        view.observePath(mover2.connect());
 
-            PathMover mover2 = new PathMover(brush.getMyBrushTwo(), game, client);
-            mover2.observe(brush.connect());
-            view.observePath(mover2.connect());
+        PathMover mover3 = new PathMover(brush.getMyBrushThree(), game, client);
+        mover3.observe(brush.connect());
+//        view.observePath(mover3.connect());
 
-            PathMover mover3 = new PathMover(brush.getMyBrushThree(), game, client);
-            mover3.observe(brush.connect());
-            view.observePath(mover3.connect());
-
-            colorChangeController.observeColorChange(client);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        colorChangeController.observeColorChange(client);
     }
 
     public void initialize() throws InterruptedException {
@@ -60,7 +55,6 @@ public class GameController {
             for (int y = 0; y < NUMBER; y++) {
                 field = game.createField(x, y, client);
                 view.drawScaledField(field);
-                Thread.sleep(1);
             }
         }
     }
