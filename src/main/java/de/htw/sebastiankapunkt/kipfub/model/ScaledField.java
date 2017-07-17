@@ -5,7 +5,7 @@ public class ScaledField {
     public final int y;
     public final boolean isWalkable;
 
-    public static double maxScore = 6;
+    public static double maxScore = 12;
     public double score = maxScore / 2;
 
     public ScaledField(int x, int y, boolean isWalkable) {
@@ -14,15 +14,15 @@ public class ScaledField {
         this.isWalkable = isWalkable;
     }
 
-    public void addScore() {
-        if (score < maxScore) {
-            score += 1;
+    public void addScore(float value) {
+        if (score + value <= maxScore) {
+            score += value;
         }
     }
 
-    public void removeScore() {
-        if (score > 0) {
-            score -= 1;
+    public void removeScore(float value) {
+        if (score - value >= 0) {
+            score -= value;
         }
     }
 

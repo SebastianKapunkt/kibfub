@@ -32,36 +32,67 @@ public class GameField {
 
                 ScaledField changes = getField(colorChange.x, colorChange.y);
 
-                if (colorChange.bot == 2) {
-                    if (colorChange.y - 16 > 0) {
-                        up = getField(colorChange.x, colorChange.y - SCALE);
-                    }
-                    if (colorChange.x + 16 < 1024) {
-                        right = getField(colorChange.x + SCALE, colorChange.y);
-                    }
-                    if (colorChange.y + 16 < 1024) {
-                        down = getField(colorChange.x, colorChange.y - SCALE);
-                    }
-                    if (colorChange.x - 16 > 0) {
-                        left = getField(colorChange.x - SCALE, colorChange.y);
-                    }
-
-                    if (up != null) {
-                        score(colorChange, up);
-                    }
-                    if (right != null) {
-                        score(colorChange, right);
-                    }
-                    if (down != null) {
-                        score(colorChange, down);
-                    }
-                    if (left != null) {
-                        score(colorChange, left);
-                    }
+                switch (colorChange.bot) {
+                    case 0:
+                        if (colorChange.y - 16 > 0) {
+                            up = getField(colorChange.x, colorChange.y - SCALE);
+                        }
+                        if (colorChange.x + 16 < 1024) {
+                            right = getField(colorChange.x + SCALE, colorChange.y);
+                        }
+                        if (colorChange.y + 16 < 1024) {
+                            down = getField(colorChange.x, colorChange.y - SCALE);
+                        }
+                        if (colorChange.x - 16 > 0) {
+                            left = getField(colorChange.x - SCALE, colorChange.y);
+                        }
+                        if (up != null) {
+                            score(colorChange, up, 0.5f);
+                        }
+                        if (right != null) {
+                            score(colorChange, right, 0.5f);
+                        }
+                        if (down != null) {
+                            score(colorChange, down, 0.5f);
+                        }
+                        if (left != null) {
+                            score(colorChange, left, 0.5f);
+                        }
+                        score(colorChange, changes, 0.5f);
+                        break;
+                    case 1:
+                        score(colorChange, changes, 2);
+                        break;
+                    case 2:
+                        if (colorChange.y - 16 > 0) {
+                            up = getField(colorChange.x, colorChange.y - SCALE);
+                        }
+                        if (colorChange.x + 16 < 1024) {
+                            right = getField(colorChange.x + SCALE, colorChange.y);
+                        }
+                        if (colorChange.y + 16 < 1024) {
+                            down = getField(colorChange.x, colorChange.y - SCALE);
+                        }
+                        if (colorChange.x - 16 > 0) {
+                            left = getField(colorChange.x - SCALE, colorChange.y);
+                        }
+                        if (up != null) {
+                            score(colorChange, up, 2);
+                        }
+                        if (right != null) {
+                            score(colorChange, right, 2);
+                        }
+                        if (down != null) {
+                            score(colorChange, down, 2);
+                        }
+                        if (left != null) {
+                            score(colorChange, left, 2);
+                        }
+                        score(colorChange, changes, 2);
+                        break;
+                    default:
+                        score(colorChange, changes, 2);
                 }
-
-                score(colorChange, changes);
-
 
                 subject.onNext(changes);
 
@@ -91,11 +122,11 @@ public class GameField {
         });
     }
 
-    private void score(ColorChange colorChange, ScaledField changes) {
+    private void score(ColorChange colorChange, ScaledField changes, float value) {
         if (colorChange.player == myPlayerNumber) {
-            changes.addScore();
+            changes.addScore(value);
         } else {
-            changes.removeScore();
+            changes.removeScore(value);
         }
     }
 
