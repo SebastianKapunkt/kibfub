@@ -100,7 +100,7 @@ public class HeatMapController {
             }
         }
         for (Map.Entry<Node, Double> nodeDoubleEntry : arr.entrySet()) {
-            if (two == null || Math.abs(nodeDoubleEntry.getValue() - 3) < Math.abs(two.getValue() - 3)) {
+            if (two == null || Math.abs(nodeDoubleEntry.getValue() - ScaledField.maxScore/2) < Math.abs(two.getValue() - ScaledField.maxScore/2)) {
                 two = nodeDoubleEntry;
             }
         }
@@ -116,7 +116,7 @@ public class HeatMapController {
         }
 
         for (Map.Entry<Node, Double> nodeDoubleEntry : nodesOfTwo.entrySet()) {
-            if (second == null || Math.abs(nodeDoubleEntry.getValue() - 3) < Math.abs(second.getValue() - 3)) {
+            if (second == null || Math.abs(nodeDoubleEntry.getValue() - ScaledField.maxScore/2) < Math.abs(second.getValue() - ScaledField.maxScore/2)) {
                 second = nodeDoubleEntry;
             }
         }

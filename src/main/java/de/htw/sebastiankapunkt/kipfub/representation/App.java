@@ -127,7 +127,7 @@ public class App extends Application {
 
     public void drawSum(Map<Node, Double> sum, int scale) {
         for (Map.Entry<Node, Double> nodeIntegerEntry : sum.entrySet()) {
-            context.setFill(new Color(1, 0, 0, 1 - nodeIntegerEntry.getValue() / 6));
+            context.setFill(new Color(1, 0, 0, 1 - nodeIntegerEntry.getValue() / ScaledField.maxScore));
             context.fillRect(
                     nodeIntegerEntry.getKey().x * scale,
                     nodeIntegerEntry.getKey().y * scale,

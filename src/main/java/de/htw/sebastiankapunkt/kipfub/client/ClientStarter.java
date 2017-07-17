@@ -2,10 +2,12 @@ package de.htw.sebastiankapunkt.kipfub.client;
 
 public class ClientStarter {
     public static void main(String[] args) {
-        String host = "192.168.2.100";
+//        String host = "192.168.2.100";
+        String host = "141.45.209.243";
+//        String host = "localhost";
 
         new Thread(() -> {
-            new KipFubClient(host, "Name1");
+            new KipFubClient(host, "Hallo ich bin Fred");
         }).start();
 //        new Thread(() -> {
 //            new RandomClient(host, "Random1");

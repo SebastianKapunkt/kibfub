@@ -15,9 +15,9 @@ public class RandomClient {
         while (networkClient.isAlive()) {
             if (System.currentTimeMillis() - i > 1000) {
                 i = System.currentTimeMillis();
-//                networkClient.setMoveDirection(0, randomDirection(), randomDirection());
-//                networkClient.setMoveDirection(1, randomDirection(), randomDirection());
-//                networkClient.setMoveDirection(2, randomDirection(), randomDirection());
+                networkClient.setMoveDirection(0, randomDirection(), randomDirection());
+                networkClient.setMoveDirection(1, randomDirection(), randomDirection());
+                networkClient.setMoveDirection(2, randomDirection(), randomDirection());
             }
         }
     }

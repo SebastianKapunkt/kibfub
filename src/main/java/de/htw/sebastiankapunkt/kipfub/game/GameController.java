@@ -54,7 +54,11 @@ public class GameController {
         for (int x = 0; x < NUMBER; x++) {
             for (int y = 0; y < NUMBER; y++) {
                 field = game.createField(x, y, client);
-                view.drawScaledField(field);
+                try {
+                    view.drawScaledField(field);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
