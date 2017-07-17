@@ -78,28 +78,33 @@ public class App extends Application {
     }
 
     public void drawGrid() {
-        context.setFill(Color.DARKCYAN);
-        for (int x = SCALE; x < boardSize; x = x + SCALE) {
-            context.fillRect(x, 0, strokeWidth, boardSize);
-        }
-        for (int y = SCALE; y < boardSize; y = y + SCALE) {
-            context.fillRect(0, y, boardSize, strokeWidth);
-        }
+        context.setFill(Color.DARKORCHID);
+        context.fillRect(
+                0,
+                0,
+                1024,
+                1024
+        );
+//        context.setFill(Color.DARKCYAN);
+//        for (int x = SCALE; x < boardSize; x = x + SCALE) {
+//            context.fillRect(x, 0, strokeWidth, boardSize);
+//        }
+//        for (int y = SCALE; y < boardSize; y = y + SCALE) {
+//            context.fillRect(0, y, boardSize, strokeWidth);
+//        }
     }
 
     public void drawScaledField(ScaledField scaledField) {
         if (scaledField.isWalkable) {
             double score = scaledField.getScore();
             context.setFill(new Color(score / maxScore, score / maxScore, score / maxScore, 1));
-        } else {
-            context.setFill(Color.ANTIQUEWHITE);
+            context.fillRect(
+                    scaledField.x + strokeWidth,
+                    scaledField.y + strokeWidth,
+                    SCALE - strokeWidth,
+                    SCALE - strokeWidth
+            );
         }
-        context.fillRect(
-                scaledField.x + strokeWidth,
-                scaledField.y + strokeWidth,
-                SCALE - strokeWidth,
-                SCALE - strokeWidth
-        );
     }
 
     public void drawPath(LinkedList<Node> nodes) {
