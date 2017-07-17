@@ -2,7 +2,6 @@ package de.htw.sebastiankapunkt.kipfub.game;
 
 import de.htw.sebastiankapunkt.kipfub.model.Node;
 import de.htw.sebastiankapunkt.kipfub.model.ScaledField;
-import de.htw.sebastiankapunkt.kipfub.representation.HeatMapView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,6 @@ public class HeatMapController {
     public Map<Node, Double> heatMap = new HashMap<>();
     public Map<Node, Double> arr = new HashMap<>();
     public static final int HEATMAP_MODIFIER = 4;
-    private HeatMapView app;
 
     public HeatMapController(ScaledField[][] game) {
         this.game = game.clone();
@@ -33,17 +31,6 @@ public class HeatMapController {
                 arr.put(new Node(x, y), sumForBig(x, y, heatMap));
             }
         }
-
-//        new JFXPanel();
-//        Platform.runLater(() -> {
-//            try {
-//                new HeatMapView().start(new Stage());
-//                app = HeatMapView.waitForStart();
-//                app.drawSum(heatMap);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        });
     }
 
     private Double sumForSmall(int fromX, int fromY, ScaledField[][] field) {
