@@ -66,7 +66,8 @@ public class PathMover {
 
                         HeatMapController heatMap = new HeatMapController(game.getBoard());
                         heatMap.createHeatMap();
-                        Node highest = heatMap.getHighest(brush.type);
+
+                        Node highest = heatMap.getSecondLayerMax(brush.type);
 
                         System.out.println(highest.x + " " + highest.y);
                         int x = (highest.x * HEATMAP_MODIFIER) + (HEATMAP_MODIFIER / 2);

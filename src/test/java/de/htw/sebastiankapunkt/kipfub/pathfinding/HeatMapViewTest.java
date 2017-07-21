@@ -135,9 +135,9 @@ public class HeatMapViewTest {
 
         HeatMapController m = new HeatMapController(field);
         m.createHeatMap();
-        m.getHighest(0);
-        m.getHighest(1);
-        m.getHighest(2);
+        m.getSecondLayerMax(0);
+        m.getSecondLayerMax(1);
+        m.getSecondLayerMax(2);
 
         while (true) {
 

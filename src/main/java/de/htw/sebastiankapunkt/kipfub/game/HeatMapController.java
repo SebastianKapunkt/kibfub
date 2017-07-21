@@ -11,8 +11,8 @@ import static de.htw.sebastiankapunkt.kipfub.game.GameController.SCALE;
 public class HeatMapController {
 
     private ScaledField[][] game;
-    public Map<Node, Double> heatMap = new HashMap<>();
-    public Map<Node, Double> arr = new HashMap<>();
+    public Map<Node, Double> layerOne = new HashMap<>();
+    public Map<Node, Double> layerTwo = new HashMap<>();
     public static final int HEATMAP_MODIFIER = 4;
 
     public HeatMapController(ScaledField[][] game) {
@@ -22,13 +22,13 @@ public class HeatMapController {
     public void createHeatMap() {
         for (int x = 0; x < 1024 / SCALE / HEATMAP_MODIFIER; x++) {
             for (int y = 0; y < 1024 / SCALE / HEATMAP_MODIFIER; y++) {
-                heatMap.put(new Node(x, y), sumForSmall(x, y, game));
+                layerOne.put(new Node(x, y), sumForSmall(x, y, game));
             }
         }
 
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                arr.put(new Node(x, y), sumForBig(x, y, heatMap));
+                layerTwo.put(new Node(x, y), sumForBig(x, y, layerOne));
             }
         }
     }
@@ -71,30 +71,38 @@ public class HeatMapController {
         }
     }
 
-    public Node getHighest(int type) {
+    public Node getForLayerMax() {
         Map.Entry<Node, Double> one = null;
-        Map.Entry<Node, Double> two = null;
-        Map.Entry<Node, Double> three = null;
-
-        Map.Entry<Node, Double> first = null;
-        Map.Entry<Node, Double> second = null;
-        Map.Entry<Node, Double> third = null;
-
-        for (Map.Entry<Node, Double> nodeDoubleEntry : arr.entrySet()) {
-            if (one == null || three == null || one.getValue() > nodeDoubleEntry.getValue()) {
-                three = one;
+        for (Map.Entry<Node, Double> nodeDoubleEntry : layerOne.entrySet()) {
+//            if (one == null || Math.abs(nodeDoubleEntry.getValue() - ScaledField.maxScore/2) < Math.abs(one.getValue() - ScaledField.maxScore/2)) {
+            if (one == null || nodeDoubleEntry.getValue() < one.getValue()) {
                 one = nodeDoubleEntry;
             }
         }
-        for (Map.Entry<Node, Double> nodeDoubleEntry : arr.entrySet()) {
-            if (two == null || Math.abs(nodeDoubleEntry.getValue() - ScaledField.maxScore/2) < Math.abs(two.getValue() - ScaledField.maxScore/2)) {
-                two = nodeDoubleEntry;
+
+        return one.getKey();
+    }
+
+    public Node getSecondLayerMax(int type) {
+        if (type == 1) {
+            return getForLayerMax();
+        }
+        Map.Entry<Node, Double> one = null;
+        Map.Entry<Node, Double> two = null;
+
+        Map.Entry<Node, Double> first = null;
+        Map.Entry<Node, Double> second = null;
+
+
+        for (Map.Entry<Node, Double> nodeDoubleEntry : layerTwo.entrySet()) {
+            if (one == null || one.getValue() > nodeDoubleEntry.getValue()) {
+                two = one;
+                one = nodeDoubleEntry;
             }
         }
 
-        Map<Node, Double> nodesOfOne = fill(heatMap, one.getKey());
-        Map<Node, Double> nodesOfTwo = fill(heatMap, two.getKey());
-        Map<Node, Double> nodesOfThree = fill(heatMap, three.getKey());
+        Map<Node, Double> nodesOfOne = fill(layerOne, one.getKey());
+        Map<Node, Double> nodesOfTwo = fill(layerOne, two.getKey());
 
         for (Map.Entry<Node, Double> nodeDoubleEntry : nodesOfOne.entrySet()) {
             if (first == null || first.getValue() < nodeDoubleEntry.getValue()) {
@@ -108,17 +116,9 @@ public class HeatMapController {
             }
         }
 
-        for (Map.Entry<Node, Double> nodeDoubleEntry : nodesOfThree.entrySet()) {
-            if (third == null || third.getValue() < nodeDoubleEntry.getValue()) {
-                third = nodeDoubleEntry;
-            }
-        }
-
         switch (type) {
             case 0:
                 return second.getKey();
-            case 1:
-                return third.getKey();
             case 2:
                 return first.getKey();
             default:
